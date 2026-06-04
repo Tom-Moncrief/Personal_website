@@ -8,6 +8,7 @@ import { schemaTypes } from "./src/sanity/schemaTypes";
 export default defineConfig({
   name: "researcher_profile",
   title: "Researcher Profile",
+  basePath: "/studio",
   projectId: projectId || "dummy",
   dataset,
   plugins: [structureTool(), visionTool({ defaultApiVersion: apiVersion })],
