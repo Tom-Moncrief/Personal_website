@@ -18,15 +18,6 @@ import {
   talksQuery,
 } from "@/sanity/lib/queries";
 
-function hasRenderableContent(content: Partial<ResearcherProfileContent>) {
-  return Boolean(
-    content.profile?.name &&
-      content.interests?.length &&
-      content.achievements?.length &&
-      content.publications?.length,
-  );
-}
-
 export async function getProfileContent(): Promise<ResearcherProfileContent> {
   const client = getSanityClient();
 
@@ -45,21 +36,19 @@ export async function getProfileContent(): Promise<ResearcherProfileContent> {
         client.fetch<Talk[]>(talksQuery),
       ]);
 
-    const content = {
+    return {
       profile: profile ?? fallbackContent.profile,
-      interests,
-      achievements,
-      publications,
-      awards,
-      talks,
-      usingFallback: false,
+      interests: interests.length ? interests : fallbackContent.interests,
+      achievements: achievements.length
+        ? achievements
+        : fallbackContent.achievements,
+      publications: publications.length
+        ? publications
+        : fallbackContent.publications,
+      awards: awards.length ? awards : fallbackContent.awards,
+      talks: talks.length ? talks : fallbackContent.talks,
+      usingFallback: !profile,
     };
-
-    if (!hasRenderableContent(content)) {
-      return fallbackContent;
-    }
-
-    return content;
   } catch {
     return fallbackContent;
   }
