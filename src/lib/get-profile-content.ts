@@ -36,17 +36,24 @@ export async function getProfileContent(): Promise<ResearcherProfileContent> {
         client.fetch<Talk[]>(talksQuery),
       ]);
 
+    const normalizedProfile = profile
+      ? {
+          ...profile,
+          links: profile.links ?? [],
+        }
+      : fallbackContent.profile;
+
     return {
-      profile: profile ?? fallbackContent.profile,
-      interests: interests.length ? interests : fallbackContent.interests,
-      achievements: achievements.length
+      profile: normalizedProfile,
+      interests: interests?.length ? interests : fallbackContent.interests,
+      achievements: achievements?.length
         ? achievements
         : fallbackContent.achievements,
-      publications: publications.length
+      publications: publications?.length
         ? publications
         : fallbackContent.publications,
-      awards: awards.length ? awards : fallbackContent.awards,
-      talks: talks.length ? talks : fallbackContent.talks,
+      awards: awards?.length ? awards : fallbackContent.awards,
+      talks: talks?.length ? talks : fallbackContent.talks,
       usingFallback: !profile,
     };
   } catch {
