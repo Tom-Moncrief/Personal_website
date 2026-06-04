@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 
 import { getProfileContent } from "@/lib/get-profile-content";
 
+export const revalidate = 60;
+
 function SectionHeading({
   eyebrow,
   title,
